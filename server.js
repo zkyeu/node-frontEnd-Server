@@ -17,11 +17,18 @@ con.connect();
 
 
 // 创建 application/x-www-form-urlencoded 编码解析
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+
 var app = express();
 
 console.log(app)
 app.get('/show', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "X-Requested-With");
+        res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+        res.header("X-Powered-By",' 3.2.1');
+        res.header("Content-Type", "application/json;charset=utf-8");
     var addSql = 'select *  from detail';
     con.query(addSql, function (err, r) {
         if(err) return console.log('失败');
@@ -44,6 +51,11 @@ app.get('/show', function (req, res) {
 
 
 app.post('/add', urlencodedParser, function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "X-Requested-With");
+        res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+        res.header("X-Powered-By",' 3.2.1');
+        res.header("Content-Type", "application/json;charset=utf-8");
     console.log(req.body);
     //add
     var addSql = 'INSERT INTO detail(id,name,age,sex) VALUES(0,?,?,?)';
@@ -64,11 +76,6 @@ app.post('/add', urlencodedParser, function (req, res) {
 
 
 });
-
-
-
-
-
 
 
 
