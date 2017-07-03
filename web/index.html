@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.js"></script>
+    <script src="js/vue-resource.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div>新建数据</div>
+        <p>姓名：<input type="text" id="name" v-model="name"></p>
+        <p>年龄：<input type="text" id="age" v-model="age"></p>
+        <p>性别：<input type="text" id="sex" v-model="sex"></p>
+        <input type="button" id="submit" value="add" @click="addUser"></p>
+
+    <div>
+        <div @click="getDetail">获取数据</div>
+        <div v-for="x in detail" v-if="detail">
+            {{x.name}}-{{x.age}}-{{x.sex}}
+        </div>
+    </div>
+    </div>
+    <script>
+
+        //解决post请求无FormData的问题
+        Vue.http.options.emulateJSON = true;
+        new Vue({
+            el :'#app',
+            data : {
+                name : '',
+                age : '',
+                sex : '',
+                detail : null
+            },
+            methods : {
+                addUser : function () {
+                    var _this = this;
+                    _this.$http.post('http://127.0.0.1:8080/add',{
+                        name : _this.name,
+                        age : _this.age,
+                        sex : _this.sex
+                    }).then(function (r) {
+                       console.log(r);
+                    });
+                },
+                getDetail : function () {
+                    var _this = this;
+                    _this.$http.get('http://127.0.0.1:8080/show').then(function (r) {
+                        console.log(r.data.teacher);
+                        _this.detail = r.data.teacher;
+
+                    },function () {
+                        console.log('bad')
+                    });
+                }
+            }
+        })
+    </script>
+<style>
+    input{
+        display: block;
+        clear: both;
+    }
+</style>
+</body>
+</html>
